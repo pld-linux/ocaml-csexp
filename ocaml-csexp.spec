@@ -1,6 +1,6 @@
 #
 # Conditional build:
-%bcond_without	ocaml_opt	# skip building native optimized binaries (bytecode is always built)
+%bcond_without	ocaml_opt	# native optimized binaries (bytecode is always built)
 %bcond_with	dune		# build with dune, this is off due to circular deps
 
 # not yet available on x32 (ocaml 4.02.1), update when upstream will support it
@@ -14,20 +14,20 @@
 
 %define		module	csexp
 Summary:	Parsing and printing of S-expressions in canonical form
+Summary(pl.UTF-8):	Analiza i wypisywanie S-wyrażeń w postaci kanonicznej
 Name:		ocaml-%{module}
-Version:	1.4.0
+Version:	1.5.1
 Release:	1
 License:	MIT
+Group:		Libraries
+#Source0Download: https://github.com/ocaml-dune/csexp/releases
 Source0:	https://github.com/ocaml-dune/csexp/releases/download/%{version}/%{module}-%{version}.tbz
-# Source0-md5:	d6b5866be24bf8730c127eedca4dc447
+# Source0-md5:	11cf8377dc963ecaf2226df117911676
 URL:		https://github.com/ocaml-dune/csexp
-# Depend on Stdlib.Result instead of ocaml-result.
-Patch0:		%{name}-result.patch
-BuildRequires:	ocaml >= 4.02.3
+BuildRequires:	ocaml >= 1:4.03.0
 %if %{with dune}
 BuildRequires:	ocaml-dune >= 1.11
 BuildRequires:	ocaml-odoc
-BuildRequires:	ocaml-result-devel >= 1.5
 %endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -36,22 +36,27 @@ This project provides minimal support for parsing and printing
 S-expressions in canonical form, which is a very simple and canonical
 binary encoding of S-expressions.
 
+%description -l pl.UTF-8
+Ten projekt zapewnia minimalną obsługę analizy i wypisywania S-wyrażeń
+w postaci kanonicznej, będącej bardzo prostym i kanonicznym kodowaniem
+binarnym S-wyrażeń.
+
 %package devel
-Summary:	Development files for %{name}
+Summary:	Development files for csexp library
+Summary(pl.UTF-8):	Pliki programistyczne biblioteki csexp
+Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%if %{with dune}
-Requires:	ocaml-result-devel
-%endif
 
 %description devel
-The %{name}-devel package contains libraries and signature files for
-developing applications that use %{name}.
+This package contains libraries and signature files for developing
+applications that use OCaml csexp library.
+
+%description devel -l pl.UTF-8
+Ten pakiet zawiera biblioteki i pliki sygnatur do tworzenia aplikacji
+wykorzystujących bibliotekę OCamla csexp.
 
 %prep
 %setup -q -n %{module}-%{version}
-%if %{without dune}
-%patch0 -p1
-%endif
 
 %build
 %if %{with dune}
@@ -138,9 +143,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.md
-%doc LICENSE.md
-%dir %{_libdir}/ocaml/%{module}/
+%doc LICENSE.md README.md
+%dir %{_libdir}/ocaml/%{module}
 %{_libdir}/ocaml/%{module}/META
 %{_libdir}/ocaml/%{module}/*.cma
 %{_libdir}/ocaml/%{module}/*.cmi
