@@ -17,7 +17,7 @@ Summary:	Parsing and printing of S-expressions in canonical form
 Summary(pl.UTF-8):	Analiza i wypisywanie S-wyrażeń w postaci kanonicznej
 Name:		ocaml-%{module}
 Version:	1.5.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/ocaml-dune/csexp/releases
